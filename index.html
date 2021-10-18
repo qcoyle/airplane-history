@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Airplane History</title>
+    <title>Airplane Details</title>
 </head>
 
 <body>
     <main id="main">
         <div class="container">
-            <h1>See where your plane has been</h1>
+            <h1>See your plane</h1>
             <form id="form" autocomplete="off">
                 <h2>Airline</h1>
                     <p>I.e. Delta = DL, United = UA, American = AA, Southwest = WN</p>
@@ -19,8 +19,10 @@
                     <input type="submit" id="submit">
             </form>
             <br>
-            <div id="registrationResponse"> </div>
-            <div id="imageResponse"> </div>
+            <div id="flightRoute"></div>
+            <div id="flightTime"></div>
+            <div id="registrationResponse"></div>
+            <div id="imageResponse"></div>
         </div>
     </main>
     <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>

@@ -10,17 +10,8 @@ const getFlightInfo = async() => {
     const airline = inputAirline.value;
     const flightNumber = inputFlightNumber.value;
     try {
-        const response = await fetch(url + "?&fetchBy=flight&page=1&limit=10&query=" + airline + flightNumber); // airline + flightNumber);
-        if (response.ok) {
-            const jsonResponse = await response.json();
-            if (jsonResponse.errors) {
-                responseField.innerHTML = `<p>Error: couldn't format response</p>`;
-            } else {
-                flightradar.renderSuccess(jsonResponse);
-            }
-        } else {
-            flightradar.renderResquestFailure();
-        }
+        await flightradar.render(url + "?&fetchBy=flight&page=1&limit=10&query=" + airline + flightNumber); // airline + flightNumber);
+
     } catch (error) {
         console.log(error);
     }
