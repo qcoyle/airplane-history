@@ -7,6 +7,7 @@ export const getAirline = document => {
         console.log(customAirlineElement.value);
     }
 
+    // This shouldn't be hardcoded...
     if (document.querySelector("input[id='Alaska']").checked) {
         airlineCode = "AS";
     } else if (document.querySelector("input[id='American']").checked) {

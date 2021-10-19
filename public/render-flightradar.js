@@ -10,7 +10,8 @@ export const render = async(url) => {
         imageResponse: document.querySelector('#imageResponse'),
         equipmentResponse: document.querySelector('#equipment'),
         flightTimeResponse: document.querySelector("#flightTime"),
-        statusResponse: document.querySelector("#status")
+        statusResponse: document.querySelector("#status"),
+        inFlightResponse: document.querySelector("#inFlight")
     }
     console.log(url);
     const response = await fetch(url);
@@ -61,12 +62,18 @@ const renderFlightData = response => {
         const parsedData = parse.flightData(response)(elements);
 
         // Update DOM
-        elements.registrationResponse.innerHTML = `<p>Registration: ${parsedData.airline} ${parsedData.registration}</p>`;
-        elements.originResponse.innerHTML = `<p>Origin: ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
-        elements.destinationResponse.innerHTML = `<p>Destination: ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
-        elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${parsedData.flightTime}</p>`
-        elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${parsedData.status}</span>`
-        elements.equipmentResponse.innerHTML = `<p>Plane type: ${parsedData.equipment}</p>`
+        elements.registrationResponse.innerHTML = `<p><strong>Registration:</strong> ${parsedData.airline} ${parsedData.registration}</p>`;
+        elements.originResponse.innerHTML = `<p><strong>Origin:</strong> ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
+        elements.destinationResponse.innerHTML = `<p><strong>Destination:</strong> ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
+        elements.flightTimeResponse.innerHTML = `<p><strong>Flight duration:</strong> ${parsedData.flightTime}</p>`;
+        elements.equipmentResponse.innerHTML = `<p><strong>Aircraft:</strong> ${parsedData.equipment}</p>`;
+
+        console.log(`inFlight is ${parsedData.inFlight}`);
+        if (parsedData.inFlight) {
+            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-success">In flight</span> <span style="font-family: monospace"> ${parsedData.status}</span> (arrival time)`
+        } else {
+            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-secondary" style="font-family: monospace">${parsedData.status}</span>`;
+        }
     }
 }
 
@@ -77,7 +84,7 @@ const renderImageData = response => {
             elements.imageResponse.innerHTML = `<p>No plane image data found</p>`;
         } else {
             // Update DOM
-            elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${parsedData.image}>`;
+            elements.imageResponse.innerHTML = `<p><strong>Your plane:</strong></p><img src=${parsedData.image}>`;
             let para = document.createElement("p");
             let node = document.createTextNode(`Photo copyright: ${parsedData.copyright}`);
             para.appendChild(node);

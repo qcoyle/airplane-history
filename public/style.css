@@ -5,8 +5,16 @@ body {
     margin-right: auto;
 }
 
+h1 {
+    font-size: 60px;
+}
+
 h2,
 input,
 #radio-buttons {
     margin: 10px
+}
+
+p {
+    font-size: 22px;
 }

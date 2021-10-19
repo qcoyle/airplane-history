@@ -8,6 +8,8 @@ export const flightData = response => {
     console.log(flights);
 
     return function parseAndRenderErrors(elements) {
+        let inFlight = false;
+
         try {
             // Once we select the necessary flight, stop looping through flights
             while (showFlight === undefined) {
@@ -15,6 +17,7 @@ export const flightData = response => {
                 // Find if the flight is live
                 let status = flight.status;
                 if (status.live === true) {
+                    inFlight = true;
                     showFlight = flight;
 
                     //If flight isn't live, find the next scheduled one
@@ -56,7 +59,8 @@ export const flightData = response => {
             scheduledArrive: scheduledArrivalTime,
             originTimezone: originTimezone,
             flightTime: new Date((arrivalTimeRaw - departureTimeRaw) * 1000).toISOString().substr(11, 8),
-            status: showFlight.status.text
+            status: showFlight.status.text,
+            inFlight: inFlight
         }
 
         return data;
