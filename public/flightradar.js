@@ -6,6 +6,8 @@ const destinationResponse = document.querySelector('#destination');
 const registrationResponse = document.querySelector('#registrationResponse');
 const imageResponse = document.querySelector('#imageResponse');
 const equipmentResponse = document.querySelector('#equipment');
+const flightTimeResponse = document.querySelector("#flightTime")
+const statusResponse = document.querySelector("#status")
 
 export const render = async(url) => {
     console.log(url);
@@ -55,7 +57,6 @@ const parseFlightData = response => {
     // Once we select a flight, stop looping through flights
     while (showFlight === undefined) {
         let flight = flights[i];
-        console.log(flight);
         // Find if the flight is live
         let status = flight.status;
         if (status.live === true) {
@@ -74,15 +75,27 @@ const parseFlightData = response => {
         console.log("no flight found");
     }
 
-    console.log(showFlight.time.scheduled);
+    console.log(showFlight);
+    let originAirport = showFlight.airport.origin;
+    let destinationAirport = showFlight.airport.destination;
+    let originTimezone = originAirport.timezone.name;
+    // let destinationTimeOffset = destinationAirport.timezone.offset;
+    let departureTimeRaw = showFlight.time.scheduled.departure;
+    let arrivalTimeRaw = showFlight.time.scheduled.arrival;
+    let scheduledDepartureTime = new Date(departureTimeRaw * 1000).toLocaleString("en-US", { timeZone: originTimezone });
+    let destinationTimezone = destinationAirport.timezone.name;
+    let scheduledArrivalTime = new Date(arrivalTimeRaw * 1000).toLocaleString("en-US", { timeZone: destinationTimezone });
+
     let data = {
         airline: showFlight.airline.name,
-        origin: showFlight.airport.origin.name,
-        destination: showFlight.airport.destination.name,
+        origin: originAirport.name,
+        destination: destinationAirport.name,
         registration: showFlight.aircraft.registration,
         equipment: showFlight.aircraft.model.text,
-        scheduledDepart: new Date(showFlight.time.scheduled.departure * 1000),
-        scheduledArrive: new Date(showFlight.time.scheduled.arrival * 1000),
+        scheduledDepart: scheduledDepartureTime,
+        scheduledArrive: scheduledArrivalTime,
+        originTimezone: originTimezone,
+        flightTime: new Date((arrivalTimeRaw - departureTimeRaw) * 1000).toISOString().substr(11, 8),
         status: showFlight.status.text
     }
 
@@ -92,14 +105,12 @@ const parseFlightData = response => {
 const parseImageData = response => {
     // Parse out JSON
     let aircraftImages = response.aircraftImages;
-    let registration = aircraftImages[0].registration;
     let images = aircraftImages[0].images;
     let imageObject = images.medium[0];
     let imageData = {
-            image: imageObject.src,
-            copyright: imageObject.copyright
-        }
-        // let imageData = [registration, imageObject.src, imageObject.copyright]
+        image: imageObject.src,
+        copyright: imageObject.copyright
+    }
 
     console.log(response.aircraftImages)
     console.log(imageData);
@@ -110,8 +121,10 @@ const parseImageData = response => {
 const renderFlightData = flightData => {
     registrationResponse.innerHTML = `<p>Registration: ${flightData.airline} ${flightData.registration}</p>`;
     airlineResponse.innerHTML = `<p>Airline: ${flightData.airline}</p>`;
-    originResponse.innerHTML = `<p>Origin: ${flightData.scheduledDepart} at ${flightData.origin}</p>`;
-    destinationResponse.innerHTML = `<p>Destination: ${flightData.scheduledArrive} at ${flightData.destination}</p>`;
+    originResponse.innerHTML = `<p>Origin: ${flightData.scheduledDepart} (local time) at ${flightData.origin}</p>`;
+    destinationResponse.innerHTML = `<p>Destination: ${flightData.scheduledArrive} (local time) at ${flightData.destination}</p>`;
+    flightTimeResponse.innerHTML = `<p>Flight duration: ${flightData.flightTime}</p>`
+    statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${flightData.status}</span>`
     equipmentResponse.innerHTML = `<p>Plane type: ${flightData.equipment}</p>`
 }
 
