@@ -4,33 +4,33 @@
 <head>
     <meta charset="utf-8">
     <title>Airplane Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="default-styles.css" rel="stylesheet">
+    <link href="/public/style.css" rel="stylesheet">
 </head>
 
-<body>
-    <main id="main">
-        <div class="container">
-            <h1>See your plane!</h1>
-            <p>Note: flight must be en-route or scheduled</p>
-            <form id="form" autocomplete="off">
-                <h2>Airline</h1>
-                    <p>I.e. Delta = DL, United = UA, American = AA, Southwest = WN</p>
-                    <input required type="text" id="airline" value="">
-                    <h2>Enter your flight number</h2>
-                    <input required type="text" id="flight-number" value="">
-                    <input type="submit" id="submit">
-            </form>
-            <br>
-            <div id="responses">
-                <div id="origin"></div>
-                <div id="destination"></div>
-                <div id="flightTime"></div>
-                <div id="status"></div>
-                <div id="equipment"></div>
-                <div id="registrationResponse"></div>
-                <div id="imageResponse"></div>
-            </div>
-        </div>
-    </main>
+<body class="container-fluid">
+    <h1 class="row justify-content-center">See your plane!</h1>
+    <p class="row justify-content-center">Note: flight must be en-route or scheduled</p>
+    <div id="form" class="row">
+        <form autocomplete="off" class="row justify-content-center">
+            <h2 class="col-4">Airline:</h2>
+            <input class="col-6" required type="text" id="airline" value="">
+            <h2 class="col-4">Flight number:</h2>
+            <input class="col-6" required type="text" id="flight-number" value="">
+            <input class="col-3 btn btn-primary" type="submit" id="submit">
+        </form>
+    </div>
+    <br>
+    <div id="responses">
+        <div id="origin"></div>
+        <div id="destination"></div>
+        <div id="flightTime"></div>
+        <div id="status"></div>
+        <div id="equipment"></div>
+        <div id="registrationResponse"></div>
+        <div id="imageResponse"></div>
+    </div>
     <script type="module" src="public/main.js"></script>
 </body>
 

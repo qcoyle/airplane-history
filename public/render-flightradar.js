@@ -43,12 +43,12 @@ const renderSuccess = jsonResponse => {
 
 const renderRequestFailure = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `Error: Request failed. Flight information might be invalid.`;
+    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: Request failed. Flight information might be invalid.</span>`;
 }
 
 export const renderInvalidResponse = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `Error: The request succeeded but the flight could not be found. Flight information might be invalid.`;
+    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: The request succeeded but the flight could not be found. Flight information might be invalid.</span>`;
 }
 
 const clearElements = elements => {
