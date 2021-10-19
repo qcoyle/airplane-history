@@ -38,8 +38,8 @@ const renderSuccess = (jsonResponse, elements) => {
     let response = result.response;
 
     console.log(response);
-    parseFlightData(response, elements);
-    parseImageData(response, elements);
+    renderFlightData(response, elements)
+    renderImageData(response, elements);
 }
 
 const renderRequestFailure = elements => {
@@ -57,6 +57,30 @@ const clearElements = elements => {
     DOMResponsesValues.forEach(element => {
         element.innerHTML = ""
     });
+}
+
+const renderFlightData = (response, elements) => {
+    const parsedData = parseFlightData(response, elements)
+
+    // Update DOM
+    elements.registrationResponse.innerHTML = `<p>Registration: ${parsedData.airline} ${parsedData.registration}</p>`;
+    elements.airlineResponse.innerHTML = `<p>Airline: ${parsedData.airline}</p>`;
+    elements.originResponse.innerHTML = `<p>Origin: ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
+    elements.destinationResponse.innerHTML = `<p>Destination: ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
+    elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${parsedData.flightTime}</p>`
+    elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${parsedData.status}</span>`
+    elements.equipmentResponse.innerHTML = `<p>Plane type: ${parsedData.equipment}</p>`
+}
+
+const renderImageData = (response, elements) => {
+    const parsedData = parseImageData(response, elements)
+
+    // Update DOM
+    elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${parsedData.image}>`;
+    let para = document.createElement("p");
+    let node = document.createTextNode(`Photo copyright: ${parsedData.copyright}`);
+    para.appendChild(node);
+    elements.imageResponse.appendChild(para);
 }
 
 const parseFlightData = (response, elements) => {
@@ -116,7 +140,7 @@ const parseFlightData = (response, elements) => {
         status: showFlight.status.text
     }
 
-    renderFlightData(data, elements);
+    return data;
 }
 
 const parseImageData = (response, elements) => {
@@ -124,31 +148,11 @@ const parseImageData = (response, elements) => {
     let aircraftImages = response.aircraftImages;
     let images = aircraftImages[0].images;
     let imageObject = images.medium[0];
-    let imageData = {
-        image: imageObject.src,
-        copyright: imageObject.copyright
-    }
+    let data = {
+            image: imageObject.src,
+            copyright: imageObject.copyright
+        }
+        // If errors come up as future bugs, call error functions via elements
 
-    console.log(response.aircraftImages)
-    console.log(imageData);
-    renderImageData(imageData, elements)
-}
-
-// Update DOM
-const renderFlightData = (flightData, elements) => {
-    elements.registrationResponse.innerHTML = `<p>Registration: ${flightData.airline} ${flightData.registration}</p>`;
-    elements.airlineResponse.innerHTML = `<p>Airline: ${flightData.airline}</p>`;
-    elements.originResponse.innerHTML = `<p>Origin: ${flightData.scheduledDepart} (local time) at ${flightData.origin}</p>`;
-    elements.destinationResponse.innerHTML = `<p>Destination: ${flightData.scheduledArrive} (local time) at ${flightData.destination}</p>`;
-    elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${flightData.flightTime}</p>`
-    elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${flightData.status}</span>`
-    elements.equipmentResponse.innerHTML = `<p>Plane type: ${flightData.equipment}</p>`
-}
-
-const renderImageData = (imageData, elements) => {
-    elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${imageData.image}>`;
-    let para = document.createElement("p");
-    let node = document.createTextNode(`Photo copyright: ${imageData.copyright}`);
-    para.appendChild(node);
-    elements.imageResponse.appendChild(para);
+    return data;
 }
