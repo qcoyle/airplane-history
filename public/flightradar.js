@@ -1,15 +1,17 @@
-// NOTE: This module is not used because of CORS errors when calling https://flightaware.com. It appears they don't allow fetch calls to the raw HTML. The solution is signing up for access to their REST API but that requires a credit card
-
-const airlineResponse = document.querySelector('#airline');
-const originResponse = document.querySelector('#origin');
-const destinationResponse = document.querySelector('#destination');
-const registrationResponse = document.querySelector('#registrationResponse');
-const imageResponse = document.querySelector('#imageResponse');
-const equipmentResponse = document.querySelector('#equipment');
-const flightTimeResponse = document.querySelector("#flightTime")
-const statusResponse = document.querySelector("#status")
-
 export const render = async(url) => {
+
+    // All elements we will update
+    const DOMElements = {
+        airlineResponse: document.querySelector('#airline'),
+        originResponse: document.querySelector('#origin'),
+        destinationResponse: document.querySelector('#destination'),
+        registrationResponse: document.querySelector('#registrationResponse'),
+        imageResponse: document.querySelector('#imageResponse'),
+        equipmentResponse: document.querySelector('#equipment'),
+        flightTimeResponse: document.querySelector("#flightTime"),
+        statusResponse: document.querySelector("#status")
+    }
+
     console.log(url);
     const response = await fetch(url);
     console.log(response);
@@ -17,16 +19,16 @@ export const render = async(url) => {
         const jsonResponse = await response.json();
         console.log(jsonResponse);
         if (jsonResponse.errors) {
-            responseField.innerHTML = `<p>Error: couldn't format response</p>`;
+            renderRequestFailure();
         } else {
-            renderSuccess(jsonResponse);
+            renderSuccess(jsonResponse, DOMElements); // Promise fails
         }
     } else {
-        renderRequestFailure();
+        renderRequestFailure(); // Bad HTTP response
     }
 }
 
-const renderSuccess = jsonResponse => {
+const renderSuccess = (jsonResponse, elements) => {
     // // Uncomment to see raw JSON response
     // let structuredResponse = JSON.stringify(jsonResponse).replace(/,/g, ", \n");
     // structuredResponse = `<pre>${structuredResponse}</pre>`;
@@ -36,19 +38,28 @@ const renderSuccess = jsonResponse => {
     let response = result.response;
 
     console.log(response);
-    parseFlightData(response);
-    parseImageData(response);
+    parseFlightData(response, elements);
+    parseImageData(response, elements);
 }
 
-const renderRequestFailure = () => {
-    registrationResponse.innerHTML = `Error: Request failed. Flight information might be invalid.`;
+const renderRequestFailure = elements => {
+    clearElements(elements)
+    elements.originResponse.innerHTML = `Error: Request failed. Flight information might be invalid.`;
 }
 
-const renderInvalidResponse = () => {
+const renderInvalidResponse = elements => {
+    clearElements(elements)
     registrationResponse.innerHTML = `Error: The request succeeded but the flight could not be found. Flight information might be invalid.`;
 }
 
-const parseFlightData = response => {
+const clearElements = elements => {
+    let DOMResponsesValues = Object.values(elements);
+    DOMResponsesValues.forEach(element => {
+        element.innerHTML = ""
+    });
+}
+
+const parseFlightData = (response, elements) => {
     console.log("Parse flight data");
     let flights = response.data;
     let showFlight; // The flight we'll display info about
@@ -99,10 +110,10 @@ const parseFlightData = response => {
         status: showFlight.status.text
     }
 
-    renderFlightData(data);
+    renderFlightData(data, elements);
 }
 
-const parseImageData = response => {
+const parseImageData = (response, elements) => {
     // Parse out JSON
     let aircraftImages = response.aircraftImages;
     let images = aircraftImages[0].images;
@@ -114,24 +125,24 @@ const parseImageData = response => {
 
     console.log(response.aircraftImages)
     console.log(imageData);
-    renderImageData(imageData)
+    renderImageData(imageData, elements)
 }
 
 // Update DOM
-const renderFlightData = flightData => {
-    registrationResponse.innerHTML = `<p>Registration: ${flightData.airline} ${flightData.registration}</p>`;
-    airlineResponse.innerHTML = `<p>Airline: ${flightData.airline}</p>`;
-    originResponse.innerHTML = `<p>Origin: ${flightData.scheduledDepart} (local time) at ${flightData.origin}</p>`;
-    destinationResponse.innerHTML = `<p>Destination: ${flightData.scheduledArrive} (local time) at ${flightData.destination}</p>`;
-    flightTimeResponse.innerHTML = `<p>Flight duration: ${flightData.flightTime}</p>`
-    statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${flightData.status}</span>`
-    equipmentResponse.innerHTML = `<p>Plane type: ${flightData.equipment}</p>`
+const renderFlightData = (flightData, elements) => {
+    elements.registrationResponse.innerHTML = `<p>Registration: ${flightData.airline} ${flightData.registration}</p>`;
+    elements.airlineResponse.innerHTML = `<p>Airline: ${flightData.airline}</p>`;
+    elements.originResponse.innerHTML = `<p>Origin: ${flightData.scheduledDepart} (local time) at ${flightData.origin}</p>`;
+    elements.destinationResponse.innerHTML = `<p>Destination: ${flightData.scheduledArrive} (local time) at ${flightData.destination}</p>`;
+    elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${flightData.flightTime}</p>`
+    elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${flightData.status}</span>`
+    elements.equipmentResponse.innerHTML = `<p>Plane type: ${flightData.equipment}</p>`
 }
 
-const renderImageData = imageData => {
-    imageResponse.innerHTML = `<p>Your plane:</p><img src=${imageData.image}>`;
-    const para = document.createElement("p");
-    const node = document.createTextNode(`Photo copyright: ${imageData.copyright}`);
+const renderImageData = (imageData, elements) => {
+    elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${imageData.image}>`;
+    let para = document.createElement("p");
+    let node = document.createTextNode(`Photo copyright: ${imageData.copyright}`);
     para.appendChild(node);
-    imageResponse.appendChild(para);
+    elements.imageResponse.appendChild(para);
 }

@@ -1,3 +1,6 @@
+// NOTE: This module is not used because of CORS errors when calling https://flightaware.com. It appears they don't allow fetch calls to the raw HTML. The solution is signing up for access to their REST API but that requires a credit card
+
+
 const pastFlights = document.querySelector('#pastFlights');
 
 export const render = async(url) => {
