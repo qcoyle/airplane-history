@@ -12,7 +12,6 @@ export const render = async(url) => {
         flightTimeResponse: document.querySelector("#flightTime"),
         statusResponse: document.querySelector("#status")
     }
-
     console.log(url);
     const response = await fetch(url);
     console.log(response);

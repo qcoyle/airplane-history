@@ -4,19 +4,20 @@ const url = 'https://api.flightradar24.com/common/v1/flight/list.json';
 const inputAirline = document.querySelector('#airline');
 const inputFlightNumber = document.querySelector('#flight-number');
 const submitButton = document.querySelector('#submit');
-let radioButtons = document.querySelector('div[id="radio-buttons');
+const otherAirlineButton = document.querySelector("#other-airline");
 
-// AJAX functions
 const getFlightInfo = async() => {
-    let airline = getAirline(document)
+    const airline = getAirline(document)
     const flightNumber = inputFlightNumber.value;
     console.log(flightNumber);
-    if (airline = null) {
+    console.log(airline);
+    if (airline === null) {
         window.alert("Please select an airline");
     } else if (flightNumber === "") {
         window.alert("Please select a flight number");
     } else {
         try {
+            console.log(airline);
             await flightradar.render(url + "?&fetchBy=flight&page=1&limit=20&query=" + airline + flightNumber); // airline + flightNumber);
 
         } catch (error) {
@@ -25,16 +26,29 @@ const getFlightInfo = async() => {
     }
 }
 
-// Clear page and call AJAX functions
+const displayOtherAirlineHandler = event => {
+    event.preventDefault();
+    if (!document.querySelector("#custom-airline")) {
+        displayOtherAirline(document);
+    }
+}
+
 const displayFlightInfo = (event) => {
     event.preventDefault();
     getFlightInfo();
 }
 
+otherAirlineButton.addEventListener("click", displayOtherAirlineHandler);
 submitButton.addEventListener("click", displayFlightInfo);
 
 const getAirline = document => {
     let airlineCode;
+    let customAirlineElement;
+
+    if (document.querySelector('#custom-airline')) {
+        customAirlineElement = document.querySelector('#custom-airline');
+        console.log(customAirlineElement.value);
+    }
 
     if (document.querySelector("input[id='Alaska']").checked) {
         airlineCode = "AS";
@@ -50,10 +64,23 @@ const getAirline = document => {
         airlineCode = "NK";
     } else if (document.querySelector("input[id='United']").checked) {
         airlineCode = "UA";
-    } else if (document.querySelector("input[id='other-airline']").checked) {
-        window.alert("Other airline!")
+    } else if (!(customAirlineElement.value === "")) {
+        airlineCode = customAirlineElement.value;
     } else {
         window.alert("Please select an airline");
     }
+
+    console.log(airlineCode);
     return airlineCode;
+}
+
+const displayOtherAirline = document => {
+    let element = document.querySelector("#radio-buttons");
+    let input = document.createElement("input");
+    input.type = "text";
+    input.className = "col-12";
+    input.requiredType = "text";
+    input.id = "custom-airline";
+    input.placeholder = "Enter airline code (i.e. 'EK' for Emirates)";
+    element.appendChild(input);
 }

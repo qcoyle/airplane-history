@@ -5,6 +5,7 @@ export const flightData = response => {
     let flights = response.data;
     let showFlight; // The flight we'll display info about
     let i = 0;
+    console.log(flights);
 
     return function parseAndRenderErrors(elements) {
         try {
