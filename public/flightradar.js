@@ -19,12 +19,12 @@ export const render = async(url) => {
         const jsonResponse = await response.json();
         console.log(jsonResponse);
         if (jsonResponse.errors) {
-            renderRequestFailure();
+            renderRequestFailure(DOMElements);
         } else {
             renderSuccess(jsonResponse, DOMElements); // Promise fails
         }
     } else {
-        renderRequestFailure(); // Bad HTTP response
+        renderRequestFailure(DOMElements); // Bad HTTP response
     }
 }
 
@@ -49,7 +49,7 @@ const renderRequestFailure = elements => {
 
 const renderInvalidResponse = elements => {
     clearElements(elements)
-    registrationResponse.innerHTML = `Error: The request succeeded but the flight could not be found. Flight information might be invalid.`;
+    elements.originResponse.innerHTML = `Error: The request succeeded but the flight could not be found. Flight information might be invalid.`;
 }
 
 const clearElements = elements => {
@@ -63,26 +63,32 @@ const parseFlightData = (response, elements) => {
     console.log("Parse flight data");
     let flights = response.data;
     let showFlight; // The flight we'll display info about
-
     let i = 0;
-    // Once we select a flight, stop looping through flights
-    while (showFlight === undefined) {
-        let flight = flights[i];
-        // Find if the flight is live
-        let status = flight.status;
-        if (status.live === true) {
-            showFlight = flight;
 
-            //If flight isn't live, find the next scheduled one
-        } else if (status.text.includes("Landed")) {
-            showFlight = flights[i - 1];
+    try {
+        // Once we select a flight, stop looping through flights
+        while (showFlight === undefined) {
+            let flight = flights[i];
+            // Find if the flight is live
+            let status = flight.status;
+            if (status.live === true) {
+                showFlight = flight;
 
+                //If flight isn't live, find the next scheduled one
+            } else if (status.text.includes("Landed")) {
+                showFlight = flights[i - 1];
+
+            }
+            i++;
         }
-        i++;
+    } catch (error) {
+        renderInvalidResponse(elements);
+        console.log(error);
     }
 
+    // If live or next scheduled flight conditions aren't met
     if (showFlight === undefined) {
-        renderInvalidResponse();
+        renderInvalidResponse(elements);
         console.log("no flight found");
     }
 
