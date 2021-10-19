@@ -23,20 +23,22 @@ export const render = async(url) => {
         if (jsonResponse.errors) {
             renderRequestFailure(DOMElements);
         } else {
-            renderSuccess(jsonResponse, DOMElements); // Promise fails
+            renderSuccess(jsonResponse)(DOMElements); // Promise fails
         }
     } else {
         renderRequestFailure(DOMElements); // Bad HTTP response
     }
 }
 
-const renderSuccess = (jsonResponse, elements) => {
+const renderSuccess = jsonResponse => {
     let result = jsonResponse.result;
     let response = result.response;
-
     console.log(response);
-    renderFlightData(response, elements)
-    renderImageData(response, elements);
+
+    return function render(elements) {
+        renderFlightData(response)(elements);
+        renderImageData(response)(elements);
+    }
 }
 
 const renderRequestFailure = elements => {
@@ -56,30 +58,33 @@ const clearElements = elements => {
     });
 }
 
-const renderFlightData = (response, elements) => {
-    const parsedData = parse.flightData(response, elements)
+const renderFlightData = response => {
+    return function run(elements) {
+        const parsedData = parse.flightData(response)(elements);
 
-    // Update DOM
-    elements.registrationResponse.innerHTML = `<p>Registration: ${parsedData.airline} ${parsedData.registration}</p>`;
-    elements.airlineResponse.innerHTML = `<p>Airline: ${parsedData.airline}</p>`;
-    elements.originResponse.innerHTML = `<p>Origin: ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
-    elements.destinationResponse.innerHTML = `<p>Destination: ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
-    elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${parsedData.flightTime}</p>`
-    elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${parsedData.status}</span>`
-    elements.equipmentResponse.innerHTML = `<p>Plane type: ${parsedData.equipment}</p>`
+        // Update DOM
+        elements.registrationResponse.innerHTML = `<p>Registration: ${parsedData.airline} ${parsedData.registration}</p>`;
+        elements.airlineResponse.innerHTML = `<p>Airline: ${parsedData.airline}</p>`;
+        elements.originResponse.innerHTML = `<p>Origin: ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
+        elements.destinationResponse.innerHTML = `<p>Destination: ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
+        elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${parsedData.flightTime}</p>`
+        elements.statusResponse.innerHTML = `<p>Status: <span style="font-family: monospace">${parsedData.status}</span>`
+        elements.equipmentResponse.innerHTML = `<p>Plane type: ${parsedData.equipment}</p>`
+    }
 }
 
-const renderImageData = (response, elements) => {
-    const parsedData = parse.imageData(response, elements)
-
-    if (parsedData === undefined) {
-        elements.imageResponse.innerHTML = `<p>No plane image data found</p>`;
-    } else {
-        // Update DOM
-        elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${parsedData.image}>`;
-        let para = document.createElement("p");
-        let node = document.createTextNode(`Photo copyright: ${parsedData.copyright}`);
-        para.appendChild(node);
-        elements.imageResponse.appendChild(para);
+const renderImageData = response => {
+    const parsedData = parse.imageData(response)
+    return function render(elements) {
+        if (parsedData === undefined) {
+            elements.imageResponse.innerHTML = `<p>No plane image data found</p>`;
+        } else {
+            // Update DOM
+            elements.imageResponse.innerHTML = `<p>Your plane:</p><img src=${parsedData.image}>`;
+            let para = document.createElement("p");
+            let node = document.createTextNode(`Photo copyright: ${parsedData.copyright}`);
+            para.appendChild(node);
+            elements.imageResponse.appendChild(para);
+        }
     }
 }
