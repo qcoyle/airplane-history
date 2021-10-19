@@ -1,4 +1,4 @@
-import * as flightradar from "./flightradar.js"
+import * as flightradar from "./render-flightradar.js"
 
 const url = 'https://api.flightradar24.com/common/v1/flight/list.json';
 const inputAirline = document.querySelector('#airline');
