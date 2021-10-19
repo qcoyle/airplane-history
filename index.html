@@ -15,14 +15,47 @@
     <div id="form" class="row">
         <form autocomplete="off" class="row justify-content-center">
             <h2 class="col-4">Airline:</h2>
-            <input class="col-6" required type="text" id="airline" value="">
+            <div class="col-6" id="radio-buttons">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Alaska" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="Alaska">Alaska</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="American" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="American">American</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Delta" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="Delta">Delta</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Frontier" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="Frontier">Frontier</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Southwest" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="Southwest">Southwest</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Spirit" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="Spirit">Spirit</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="United" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="United">United</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="other-airline" name="customRadioInline1" class="custom-control-input">
+                    <label class="custom-control-label" for="other-airline">Choose another airline</label>
+                </div>
+            </div>
             <h2 class="col-4">Flight number:</h2>
             <input class="col-6" required type="text" id="flight-number" value="">
             <input class="col-3 btn btn-primary" type="submit" id="submit">
         </form>
     </div>
     <br>
-    <div id="responses">
+    <div id="responses" class="row justify-content-center">
         <div id="origin"></div>
         <div id="destination"></div>
         <div id="flightTime"></div>

@@ -4,7 +4,6 @@ export const render = async(url) => {
 
     // Object of elements we will update
     const DOMElements = {
-        airlineResponse: document.querySelector('#airline'),
         originResponse: document.querySelector('#origin'),
         destinationResponse: document.querySelector('#destination'),
         registrationResponse: document.querySelector('#registrationResponse'),
@@ -64,7 +63,6 @@ const renderFlightData = response => {
 
         // Update DOM
         elements.registrationResponse.innerHTML = `<p>Registration: ${parsedData.airline} ${parsedData.registration}</p>`;
-        elements.airlineResponse.innerHTML = `<p>Airline: ${parsedData.airline}</p>`;
         elements.originResponse.innerHTML = `<p>Origin: ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
         elements.destinationResponse.innerHTML = `<p>Destination: ${parsedData.scheduledArrive} (local time) at ${parsedData.destination}</p>`;
         elements.flightTimeResponse.innerHTML = `<p>Flight duration: ${parsedData.flightTime}</p>`
