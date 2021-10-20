@@ -34,3 +34,7 @@ img {
     margin: auto;
     height: auto;
 }
+
+footer p {
+    font-size: 14px;
+}
