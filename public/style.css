@@ -24,6 +24,10 @@ p {
     font-size: 22px;
 }
 
+#status p span {
+    font-size: 14px;
+}
+
 #responses {
     display: block;
 }

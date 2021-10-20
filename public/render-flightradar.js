@@ -70,7 +70,7 @@ const renderFlightData = response => {
 
         console.log(`inFlight is ${parsedData.inFlight}`);
         if (parsedData.inFlight) {
-            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-success">In flight</span> <span style="font-family: monospace"> ${parsedData.status}</span> (arrival time)`
+            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-success">In flight</span> <span style="font-family: monospace"> ${parsedData.status} (arrival time)</span>`
         } else {
             elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-secondary" style="font-family: monospace">${parsedData.status}</span>`;
         }
