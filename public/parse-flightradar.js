@@ -27,6 +27,7 @@ export const flightData = response => {
                 i++;
             }
         } catch (error) {
+            console.log(elements);
             render.renderInvalidResponse(elements);
             console.log(error);
         }

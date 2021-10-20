@@ -11,7 +11,6 @@ export const render = async(url) => {
         equipmentResponse: document.querySelector('#equipment'),
         flightTimeResponse: document.querySelector("#flightTime"),
         statusResponse: document.querySelector("#status"),
-        inFlightResponse: document.querySelector("#inFlight")
     }
     console.log(url);
     const response = await fetch(url);
@@ -42,17 +41,19 @@ const renderSuccess = jsonResponse => {
 
 const renderRequestFailure = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: Request failed. Flight information might be invalid.</span>`;
+    elements.originResponse.innerHTML = `<p class="alert alert-danger">Error: Request failed. Flight information might be invalid.</p>`;
 }
 
 export const renderInvalidResponse = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: The request succeeded but the flight could not be found. Flight information might be invalid.</span>`;
+    elements.originResponse.innerHTML = `<p class="alert alert-danger" style="margin: 10px">Error: The request succeeded but the flight could not be found. Flight information might be invalid.</p>`;
 }
 
 const clearElements = elements => {
     let DOMResponsesValues = Object.values(elements);
+    console.log(DOMResponsesValues);
     DOMResponsesValues.forEach(element => {
+        console.log(element);
         element.innerHTML = ""
     });
 }
@@ -60,7 +61,6 @@ const clearElements = elements => {
 const renderFlightData = response => {
     return function run(elements) {
         const parsedData = parse.flightData(response)(elements);
-
         // Update DOM
         elements.registrationResponse.innerHTML = `<p><strong>Registration:</strong> ${parsedData.airline} ${parsedData.registration}</p>`;
         elements.originResponse.innerHTML = `<p><strong>Origin:</strong> ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
