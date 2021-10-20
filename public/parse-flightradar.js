@@ -39,31 +39,37 @@ export const flightData = response => {
         }
 
         // Pull out what we need
-        let originAirport = showFlight.airport.origin;
-        let destinationAirport = showFlight.airport.destination;
-        let originTimezone = originAirport.timezone.name;
-        let departureTimeRaw = showFlight.time.scheduled.departure;
-        let arrivalTimeRaw = showFlight.time.scheduled.arrival;
-        let scheduledDepartureTime = new Date(departureTimeRaw * 1000).toLocaleString("en-US", { timeZone: originTimezone });
-        let destinationTimezone = destinationAirport.timezone.name;
-        let scheduledArrivalTime = new Date(arrivalTimeRaw * 1000).toLocaleString("en-US", { timeZone: destinationTimezone });
+        try {
+            let originAirport = showFlight.airport.origin;
+            let destinationAirport = showFlight.airport.destination;
+            let originTimezone = originAirport.timezone.name;
+            let departureTimeRaw = showFlight.time.scheduled.departure;
+            let arrivalTimeRaw = showFlight.time.scheduled.arrival;
+            let scheduledDepartureTime = new Date(departureTimeRaw * 1000).toLocaleString("en-US", { timeZone: originTimezone });
+            let destinationTimezone = destinationAirport.timezone.name;
+            let scheduledArrivalTime = new Date(arrivalTimeRaw * 1000).toLocaleString("en-US", { timeZone: destinationTimezone });
 
-        // Data object for export
-        let data = {
-            airline: showFlight.airline.name,
-            origin: originAirport.name,
-            destination: destinationAirport.name,
-            registration: showFlight.aircraft.registration,
-            equipment: showFlight.aircraft.model.text,
-            scheduledDepart: scheduledDepartureTime,
-            scheduledArrive: scheduledArrivalTime,
-            originTimezone: originTimezone,
-            flightTime: new Date((arrivalTimeRaw - departureTimeRaw) * 1000).toISOString().substr(11, 8),
-            status: showFlight.status.text,
-            inFlight: inFlight
+
+            // Data object for export
+            let data = {
+                airline: showFlight.airline.name,
+                origin: originAirport.name,
+                destination: destinationAirport.name,
+                registration: showFlight.aircraft.registration,
+                equipment: showFlight.aircraft.model.text,
+                scheduledDepart: scheduledDepartureTime,
+                scheduledArrive: scheduledArrivalTime,
+                originTimezone: originTimezone,
+                flightTime: new Date((arrivalTimeRaw - departureTimeRaw) * 1000).toISOString().substr(11, 8),
+                status: showFlight.status.text,
+                inFlight: inFlight
+            }
+            return data;
+
+        } catch (error) {
+            console.log(error);
+            render.renderInvalidResponse(elements);
         }
-
-        return data;
     }
 }
 

@@ -33,12 +33,14 @@ export const getAirline = document => {
 }
 
 export const displayOtherAirline = document => {
-    let element = document.querySelector("#radio-buttons");
+    let parentNode = document.querySelector("#form");
+    console.log(parentNode);
+    let element = document.querySelector("#flight-number-text");
     let input = document.createElement("input");
     input.type = "text";
-    input.className = "col-12";
+    input.className = "col-10 col-md-8";
     input.requiredType = "text";
     input.id = "custom-airline";
     input.placeholder = "Enter airline code (i.e. 'EK' for Emirates)";
-    element.appendChild(input);
+    parentNode.insertBefore(input, element);
 }

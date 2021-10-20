@@ -4,66 +4,78 @@
 <head>
     <meta charset="utf-8">
     <title>See your plane</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://quinncoyle.com/default-styles.css" rel="stylesheet">
+    <link href="../../default-styles.css" rel="stylesheet">
     <link href="./public/style.css" rel="stylesheet">
 </head>
 
 <body class="container-fluid">
     <h1 class="row justify-content-center">See your plane</h1>
     <p class="row justify-content-center">Note: flight must be en-route or scheduled</p>
-    <div id="form" class="row">
-        <form autocomplete="off" class="row justify-content-center">
+    <div class="row">
+        <form id="form" autocomplete="off" class="row justify-content-center">
             <h2 class="col-4">Airline:</h2>
             <div class="col-6" id="radio-buttons">
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="Alaska" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="Alaska">Alaska</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="American" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="American">American</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="Delta" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="Delta">Delta</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="Frontier" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="Frontier">Frontier</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="Southwest" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="Southwest">Southwest</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="Spirit" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="Spirit">Spirit</label>
-                </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="United" name="customRadioInline1" class="custom-control-input">
-                    <label class="custom-control-label" for="United">United</label>
+                <div id="only-buttons">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Alaska" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="Alaska">Alaska</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="American" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="American">American</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Delta" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="Delta">Delta</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Frontier" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="Frontier">Frontier</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Southwest" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="Southwest">Southwest</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Spirit" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="Spirit">Spirit</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="United" name="customRadioInline1" class="custom-control-input">
+                        <label class="custom-control-label" for="United">United</label>
+                    </div>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="other-airline" name="customRadioInline1" class="custom-control-input">
                     <label class="custom-control-label" for="other-airline">Choose another airline</label>
                 </div>
             </div>
-            <h2 class="col-4">Flight number:</h2>
+            <h2 class="col-4" id="flight-number-text">Flight number:</h2>
             <input class="col-6" required type="text" id="flight-number" value="">
             <input class="col-3 btn btn-primary" type="submit" id="submit">
         </form>
     </div>
     <br>
     <div id="responses" class="row justify-content-center">
-        <div id="origin" class="col-12"></div>
-        <div id="destination" class="col-12"></div>
-        <div id="flightTime" class="col-12"></div>
-        <div id="status" class="col-12"></div>
-        <div id="inFlight" class="col-12"></div>
-        <div id="equipment" class="col-12"></div>
-        <div id="registrationResponse" class="col-12"></div>
-        <div id="imageResponse" class="col-12"></div>
+        <div id="origin"></div>
+        <div id="destination"></div>
+        <div id="flightTime"></div>
+        <div id="status"></div>
+        <div id="equipment"></div>
+        <div id="registrationResponse"></div>
+        <div id="imageResponse"></div>
+    </div>
+    <br>
+    <br>
+    <div class="fixed-bottom">
+        <hr>
+        <footer class="bg-dark">
+            <p>Flight data © <a href="https://flightradar24.com " target=”_blank”>Flightradar24</a> |
+                <a href="https://github.com/qcoyle/see-your-plane">Site Code</a></p>
+        </footer>
     </div>
     <script type="module" src="public/main.js"></script>
 </body>

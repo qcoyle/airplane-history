@@ -11,10 +11,17 @@ export const render = async(url) => {
         equipmentResponse: document.querySelector('#equipment'),
         flightTimeResponse: document.querySelector("#flightTime"),
         statusResponse: document.querySelector("#status"),
-        inFlightResponse: document.querySelector("#inFlight")
     }
     console.log(url);
-    const response = await fetch(url);
+    let response = undefined;
+
+    // Check for fetch error
+    try {
+        response = await fetch(url);
+    } catch (error) {
+        renderRequestFailure(DOMElements);
+        console.log(error);
+    }
     console.log(response);
     if (response.ok) {
         const jsonResponse = await response.json();
@@ -25,7 +32,7 @@ export const render = async(url) => {
             renderSuccess(jsonResponse)(DOMElements); // Promise fails
         }
     } else {
-        renderRequestFailure(DOMElements); // Bad HTTP response
+        renderInvalidResponse(DOMElements); // Bad HTTP response
     }
 }
 
@@ -40,19 +47,21 @@ const renderSuccess = jsonResponse => {
     }
 }
 
-const renderRequestFailure = elements => {
+export const renderRequestFailure = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: Request failed. Flight information might be invalid.</span>`;
+    elements.originResponse.innerHTML = `<p class="alert alert-danger">Error: Request failed. Connection error to server.</p>`;
 }
 
 export const renderInvalidResponse = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `<span class="alert alert-danger">Error: The request succeeded but the flight could not be found. Flight information might be invalid.</span>`;
+    elements.originResponse.innerHTML = `<p class="alert alert-danger" style="margin: 10px">Error: The request succeeded but the flight could not be found. Flight information might be invalid.</p>`;
 }
 
 const clearElements = elements => {
     let DOMResponsesValues = Object.values(elements);
+    console.log(DOMResponsesValues);
     DOMResponsesValues.forEach(element => {
+        console.log(element);
         element.innerHTML = ""
     });
 }
@@ -60,7 +69,6 @@ const clearElements = elements => {
 const renderFlightData = response => {
     return function run(elements) {
         const parsedData = parse.flightData(response)(elements);
-
         // Update DOM
         elements.registrationResponse.innerHTML = `<p><strong>Registration:</strong> ${parsedData.airline} ${parsedData.registration}</p>`;
         elements.originResponse.innerHTML = `<p><strong>Origin:</strong> ${parsedData.scheduledDepart} (local time) at ${parsedData.origin}</p>`;
@@ -70,7 +78,7 @@ const renderFlightData = response => {
 
         console.log(`inFlight is ${parsedData.inFlight}`);
         if (parsedData.inFlight) {
-            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-success">In flight</span> <span style="font-family: monospace"> ${parsedData.status}</span> (arrival time)`
+            elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-success">In flight</span> <span style="font-family: monospace"> ${parsedData.status} (arrival time)</span>`
         } else {
             elements.statusResponse.innerHTML = `<p><strong>Status:</strong> <span class="alert alert-secondary" style="font-family: monospace">${parsedData.status}</span>`;
         }
