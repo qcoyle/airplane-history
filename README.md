@@ -1,5 +1,7 @@
 # README
 
+[![https://www.youtube.com/watch?v=asBRyciLmqM](https://img.youtube.com/vi/asBRyciLmqM/0.jpg)](https://www.youtube.com/watch?v=asBRyciLmqM "Video")
+
 ## Features:
 * Flights from all domestic + international airlines
 * Flights currently in the air
