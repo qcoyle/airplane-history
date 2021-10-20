@@ -38,5 +38,5 @@ const displayFlightInfo = (event) => {
     getFlightInfo();
 }
 
-otherAirlineButton.addEventListener("click", displayChooseAnotherAirline);
+otherAirlineButton.addEventListener("change", displayChooseAnotherAirline);
 submitButton.addEventListener("click", displayFlightInfo);
