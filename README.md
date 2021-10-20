@@ -1,7 +1,5 @@
 # README
 
-
-
 ## Features:
 * Flights from all domestic + international airlines
 * Flights currently in the air
