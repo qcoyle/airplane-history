@@ -13,7 +13,15 @@ export const render = async(url) => {
         statusResponse: document.querySelector("#status"),
     }
     console.log(url);
-    const response = await fetch(url);
+    let response = undefined;
+
+    // Check for fetch error
+    try {
+        response = await fetch(url);
+    } catch (error) {
+        renderRequestFailure(DOMElements);
+        console.log(error);
+    }
     console.log(response);
     if (response.ok) {
         const jsonResponse = await response.json();
@@ -24,7 +32,7 @@ export const render = async(url) => {
             renderSuccess(jsonResponse)(DOMElements); // Promise fails
         }
     } else {
-        renderRequestFailure(DOMElements); // Bad HTTP response
+        renderInvalidResponse(DOMElements); // Bad HTTP response
     }
 }
 
@@ -39,9 +47,9 @@ const renderSuccess = jsonResponse => {
     }
 }
 
-const renderRequestFailure = elements => {
+export const renderRequestFailure = elements => {
     clearElements(elements)
-    elements.originResponse.innerHTML = `<p class="alert alert-danger">Error: Request failed. Flight information might be invalid.</p>`;
+    elements.originResponse.innerHTML = `<p class="alert alert-danger">Error: Request failed. Connection error to server.</p>`;
 }
 
 export const renderInvalidResponse = elements => {

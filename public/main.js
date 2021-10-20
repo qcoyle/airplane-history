@@ -8,15 +8,22 @@ const otherAirlineButton = document.querySelector("#other-airline");
 const airlineButton = document.querySelector("#only-buttons");
 
 const getFlightInfo = async() => {
-    const airline = airlines.getAirline(document)
+    try {
+        airlines.getAirline(document);
+    } catch {
+        window.alert("Please select an airline"); // If no radio is selected
+    }
+
+    const airline = airlines.getAirline(document);
     const flightNumber = inputFlightNumber.value;
-    console.log(flightNumber);
-    console.log(airline);
     if (airline === null) {
-        window.alert("Please select an airline");
+        window.alert("Please select an airline"); // If choose another airline is selected but text field is blank
     } else if (flightNumber === "") {
         window.alert("Please select a flight number");
     } else {
+
+        console.log(flightNumber);
+        console.log(airline);
         try {
             console.log(airline);
             await flightradar.render(url + "?&fetchBy=flight&page=1&limit=20&query=" + airline + flightNumber); // airline + flightNumber);
