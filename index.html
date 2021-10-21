@@ -74,10 +74,21 @@
         <hr>
         <footer class="bg-dark">
             <p>Flight data © <a href="https://flightradar24.com " target=”_blank”>Flightradar24</a> |
-                <a href="https://github.com/qcoyle/see-your-plane">Site Code</a></p>
+                <a href="https://github.com/qcoyle/see-your-plane">Site Code</a>
+            </p>
         </footer>
     </div>
     <script type="module" src="public/main.js"></script>
+
+    <!-- Let the form be pre-filled with url queries -->
+    <script>
+        var hashParams = window.location.hash.substr(1).split('&'); // substr(1) to remove the `#`
+        for (var i = 0; i < hashParams.length; i++) {
+            var p = hashParams[i].split('=');
+            document.getElementById(p[0]).value = decodeURIComponent(p[1]); // For form fields
+            document.getElementById(p[0]).checked = true; // For radio buttons
+        }
+    </script>
 </body>
 
 </html>
