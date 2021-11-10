@@ -41,6 +41,6 @@ export const displayOtherAirline = document => {
     input.className = "col-10 col-md-8";
     input.requiredType = "text";
     input.id = "custom-airline";
-    input.placeholder = "Enter airline code (i.e. 'EK' for Emirates)";
+    input.placeholder = "Enter airline code (i.e. 'AF' for Air France)";
     parentNode.insertBefore(input, element);
 }
